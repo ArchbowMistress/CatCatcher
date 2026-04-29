@@ -1,4 +1,4 @@
-let game = new Phaser.Game(800, 600, Phaser.CANVAS, {preload: preload, create: create, update: update});
+let game = new Phaser.Game(800, 600, Phaser.CANVAS, {preload, create, update});
 let enemy, player, cursors, txtScore, score;
 
 function preload(){
@@ -32,7 +32,7 @@ function update(){
     }
     if(cursors.right.isDown){
         player.x += 5;
-        player.sccale.x = -1;
+        player.sccale.x = 1;
     }
     if(cursors.up.isDown){
         player.y -= 5;
