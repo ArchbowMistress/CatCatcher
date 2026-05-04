@@ -1,4 +1,4 @@
-let game = new Phaser.Game(800, 600, Phaser.CANVAS, {preload: preload, create: create, update: update});
+let game = new Phaser.Game(800, 600, Phaser.CANVAS, '', {preload: preload, create: create, update: update});
 let enemy, player, cursors, txtScore, score;
 
 function preload(){
