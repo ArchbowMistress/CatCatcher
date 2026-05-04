@@ -18,15 +18,17 @@ const config = {
 const game = new Phaser.Game(config);
 
 let enemy, player, cursors, txtScore, score;
+let enemyHit = false;
+let overlapCollider;
 
 function preload(){
     this.load.image('enemy', 'assets/images/enemy.png');
     this.load.image('player', 'assets/images/player.png');
-    this.load.image('bg', 'assets/images/bg.png');
+    this.load.image('bg3', 'assets/images/bg3.png');
 }
 
 function create(){
-    this.add.image(0, 0, 'bg').setOrigin(0, 0);
+    this.add.image(0, 0, 'bg3').setOrigin(0, 0);
     player = this.physics.add.sprite(400, 300, "player");
     player.setOrigin(0.5, 0);
 
@@ -38,6 +40,7 @@ function create(){
     txtScore = this.add.text(10, 10, score.toString(), style);
 
     cursors = this.input.keyboard.createCursorKeys();
+    overlapCollider = this.physics.add.overlap(player, enemy, enemyHitHandler, null, this);
 }
 
 function update(){
@@ -57,10 +60,27 @@ function update(){
         player.y += 5;
         
     }
+}
 
-    this.physics.add.overlap(player, enemy, enemyHitHandler, null, this);
-
-    function enemyHitHandler(){
-
+function enemyHitHandler(){
+    if (enemyHit) {
+        return;
     }
+
+    enemyHit = true;
+    if (overlapCollider) {
+        this.physics.world.removeCollider(overlapCollider);
+    }
+
+    enemy.x = Math.random() * game.config.width;
+    enemy.y = Math.random() * game.config.height;
+
+    console.log("Enemy hit!");
+    score++;
+    txtScore.setText(score.toString());
+
+    this.time.delayedCall(200, () => {
+        enemyHit = false;
+        overlapCollider = this.physics.add.overlap(player, enemy, enemyHitHandler, null, this);
+    });
 }
