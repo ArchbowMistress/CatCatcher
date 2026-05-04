@@ -2,9 +2,9 @@ let game = new Phaser.Game(800, 600, Phaser.CANVAS, '', {preload: preload, creat
 let enemy, player, cursors, txtScore, score;
 
 function preload(){
-    game.load.image('enemy', '../assets/images/enemy.png');
-    game.load.image('player', '../assets/images/player.png');
-    game.load.image('bg', '../assets/images/bg.png');
+    game.load.image('enemy', 'assets/images/enemy.png');
+    game.load.image('player', 'assets/images/player.png');
+    game.load.image('bg', 'assets/images/bg.png');
 }
 
 function create(){
