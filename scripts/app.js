@@ -1,38 +1,53 @@
-let game = new Phaser.Game(800, 600, Phaser.CANVAS, '', {preload: preload, create: create, update: update});
+const config = {
+    type: Phaser.AUTO,
+    width: 800,
+    height: 600,
+    physics: {
+        default: 'arcade',
+        arcade: {
+            debug: false
+        }
+    },
+    scene: {
+        preload: preload,
+        create: create,
+        update: update
+    }
+};
+
+const game = new Phaser.Game(config);
+
 let enemy, player, cursors, txtScore, score;
 
 function preload(){
-    game.load.image('enemy', 'assets/images/enemy.png');
-    game.load.image('player', 'assets/images/player.png');
-    game.load.image('bg', 'assets/images/bg.png');
+    this.load.image('enemy', 'assets/images/enemy.png');
+    this.load.image('player', 'assets/images/player.png');
+    this.load.image('bg', 'assets/images/bg.png');
 }
 
 function create(){
-    game.add.sprite(0, 0, 'bg');
-    player = game.add.sprite(400, 300, "player");
-    player.anchor.setTo(.5, 0);
-    game.physics.enable(player, Phaser.Physics.ARCADE);
+    this.add.image(0, 0, 'bg').setOrigin(0, 0);
+    player = this.physics.add.sprite(400, 300, "player");
+    player.setOrigin(0.5, 0);
 
-    enemy = game.add.sprite(Math.random() * game.width, Math.random() * game.height, "enemy");
-    game.physics.enable(enemy, Phaser.Physics.ARCADE)
-
+    enemy = this.physics.add.sprite(Math.random() * this.game.config.width, Math.random() * this.game.config.height, "enemy");
 
     //Score Test
     score = 0;
     let style = { font: '20px Arial', fill: '#FFF'};
-    txtScore = game.add.text(10, 10, score.toString(), style);
+    txtScore = this.add.text(10, 10, score.toString(), style);
 
-    cursors = game.input.keyboard.createCursorKeys();
+    cursors = this.input.keyboard.createCursorKeys();
 }
 
 function update(){
     if(cursors.left.isDown){
         player.x -= 5;
-        player.sccale.x = 1;
+        player.scaleX = 1;
     }
     if(cursors.right.isDown){
         player.x += 5;
-        player.sccale.x = -1;
+        player.scaleX = -1;
     }
     if(cursors.up.isDown){
         player.y -= 5;
@@ -43,7 +58,7 @@ function update(){
         
     }
 
-    game.physics.arcade.overlap(player, enemy, enemyHitHandler);
+    this.physics.add.overlap(player, enemy, enemyHitHandler, null, this);
 
     function enemyHitHandler(){
 
